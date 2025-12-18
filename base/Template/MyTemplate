@@ -1,0 +1,11 @@
+#ifndef __MYTEMPLATE_H__
+#define __MYTEMPLATE_H__
+#include <iostream>
+
+template <typename T>
+void print(const T &t);
+
+#include "MyTemplate.tcc"
+#endif
+
+//头文件定义模板，引入实现文件name.tcc，文件命名不加后缀name

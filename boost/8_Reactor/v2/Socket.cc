@@ -1,0 +1,39 @@
+#include "Socket.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/socket.h>
+#include <sys/types.h>
+
+
+// 创建socket套接字
+Socket::Socket(){
+    _fd = socket(AF_INET, SOCK_STREAM, 0);
+    if(_fd < 0){
+        perror("socket");
+    }
+}
+Socket::Socket(int fd): _fd(fd)
+{
+}
+
+// 关闭socket套接字
+Socket::~Socket(){
+    if(_fd >= 0){
+        close(_fd);
+    }
+}
+
+// 获取socket套接字
+int Socket::fd() const{
+    return _fd;
+}
+
+// 关闭写，但是仍然可以接收数据
+void Socket::shutDownWrite(){
+    int ret = shutdown(_fd, SHUT_WR);   // 断开写，但是仍然可以接收数据
+    if(ret < 0){
+        perror("shutdown");
+        return;
+    }
+}
