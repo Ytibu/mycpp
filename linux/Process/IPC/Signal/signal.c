@@ -22,10 +22,8 @@ void handler_signal(int signum)
 
 int main(int argc, char *argv[])
 {
-
     signal(SIGINT, handler_signal);
     signal(SIGQUIT, handler_signal);
-    printf("SIGINT is ignored\n");
 
     while (1)
     {
