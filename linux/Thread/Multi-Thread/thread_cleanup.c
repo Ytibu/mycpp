@@ -1,7 +1,12 @@
 #include <Cfun.h>
 
 /**
- * 线程的资源清理：
+ * 线程资源清理步骤：
+ *      1.创建一个资源清理栈
+ *      2.申请资源后压栈
+ *      3.线程意外终止，清理栈弹出，释放资源
+ *      4.主动释放资源，手动弹栈来释放资源
+ * 
  *      void pthread_cleanup_push(void (*routine)(void *),  void *arg); //将申请的资源进栈
  *      void pthread_cleanup_pop(int execute);  //将申请的资源手动弹栈，参数为1，则执行资源释放函数，为0则不执行资源释放函数
  * 注意：必须在同一个作用域成对出现，详见push_pop两个函数的宏定义
@@ -10,6 +15,7 @@
  * 资源一旦进入栈中，不论何时退出线程，栈中的资源都会被释放。
  * 手动调用资源释放函数，替换成，手动调用弹栈函数
  */
+
 
 void cleanup_1(void *arg)
 {
@@ -58,6 +64,7 @@ void *thread_func(void *arg)
     pthread_cleanup_pop(1);
 
     //return NULL;  //尽量不使用return，return如果提前退出线程，系统不会自动弹栈
+    printf("------------------------------------------------------\n");
     pthread_exit(NULL);
 }
 
