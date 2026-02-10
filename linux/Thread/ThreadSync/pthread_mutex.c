@@ -1,7 +1,9 @@
-#include <Cfun.h>
+#include <stdio.h>
+#include <pthread.h>
+#include <stdlib.h>
 
-#define _NUM_ 10000000
-pthread_mutex_t mutex;
+#define _NUM_ 1000000
+pthread_mutex_t mutex;  // 互斥锁
 
 /**
  * 互斥锁：
@@ -17,17 +19,16 @@ pthread_mutex_t mutex;
 
 void* thread_Func(void* arg){
 
-    int *val = (int*)arg;
+    int *val = (int *)arg;
     for(int i = 0; i < _NUM_; ++i){
         pthread_mutex_lock(&mutex);
-        *val += 1;
+        ++(*val);
         pthread_mutex_unlock(&mutex);
     }
-
     pthread_exit(NULL);
 }
 
-int main(){
+int main(int argc, char *argv[]){
 
     int val = 0;
     pthread_t tid;
@@ -45,5 +46,6 @@ int main(){
     printf("val = %d\n",val);
 
     pthread_mutex_destroy(&mutex);
+    return 0;
 
 }
